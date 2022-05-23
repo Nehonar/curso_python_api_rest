@@ -13,33 +13,43 @@ def get_clients():
         print(cliente[1])
         
 def add_client():
+    
     nombre = str(input("Digame el nombre\n")) 
     apellido = str(input("Digame el apellido\n")) 
-    email = str(input("Digame el email")) 
-    fecha_registro = datetime.now()
+    email = str(input("Digame el email\n")) 
+    fecha_registro = str(datetime.now())
     telefono = int(input("Digame telefono (OPCIONAL)\n"))
-    cliente = (
+    data = (
         nombre,
         apellido,
         email,
         fecha_registro,
         telefono
     )
-    sql = f"INSERT INTO clientes (nombre, apellido, email, fecha_registro, telefono) VALUES {cliente}"
+    sql = (
+        "INSERT INTO clientes (nombre, apellido, email, fecha_registro, telefono) "
+        f"VALUES {data};"
+    )
+    
+    print(sql)
     cursor.execute(sql)
     
-def get_client(id):
-    sql = f"SELECT * FROM clientes WHERE id = {id}"
+def get_client():
+    id = int(input("Digame el id que desea ver\n"))
+    sql = f"SELECT * FROM clientes WHERE id = {id};"
     cursor.execute(sql)
     cliente = cursor.fetchone()
     print(cliente)
 
-def edit_client(id, edit_param):
-    sql = f"UPDATE clientes SET nombre = '{edit_param}' WHERE id = {id}"
+def edit_client():
+    id = int(input("Digame el id del cliente\n"))
+    edit_param = str(input("Que parametro desea editar\n")) # TODO get params
+    sql = f"UPDATE clientes SET nombre = '{edit_param}' WHERE id = {id};"
     cursor.execute(sql)
     
-def delete_client(id):
-    sql = f"DELETE FROM clientes WHERE id = {id}"
+def delete_client():
+    id = int(input("Digame el id que desea eliminar\n"))
+    sql = f"DELETE FROM clientes WHERE id = {id};"
     cursor.execute(sql)
 
 def open_menu():
@@ -67,11 +77,10 @@ def open_menu():
             delete_client()
         elif option == 6:
             print("Nos vemos en la proxima")
+            conexion.commit()
+            conexion.close()
             exit()
         else:
             print("Lo siento, no a elegido una opción valida")
             
-
-
-conexion.commit()
-conexion.close()
+open_menu()
