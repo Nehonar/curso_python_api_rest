@@ -1,7 +1,6 @@
 import sqlite3
-from ssl import cert_time_to_seconds
 
-from constantes import DATABASE_NAME
+from settings import DATABASE_NAME
 
 def connect_db():
     conn = sqlite3.connect(DATABASE_NAME)
@@ -9,7 +8,15 @@ def connect_db():
     return conn, cursor
 
 def add_movie(movie):
+    """
+    Add movie in DB movie
     
+    Args:
+        movie (): 
+            name,
+            duration,
+            genero
+    """
     conn, cursor = connect_db()
     
     movie = (
@@ -23,3 +30,24 @@ def add_movie(movie):
     
     conn.commit()
     conn.close()
+    
+def get_movies():
+    """
+    Get all movies in DB
+    
+    Returns:
+        _tople_: (
+            id, 
+            name, 
+            duration, 
+            genero
+        ) 
+    """
+    conn, cursor = connect_db()
+    
+    sql = "SELECT * FROM movie;"
+    cursor.execute(sql)
+    movies = cursor.fetchall()
+    conn.close()
+    
+    return movies
